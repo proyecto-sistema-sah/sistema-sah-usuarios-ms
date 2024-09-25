@@ -21,6 +21,19 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
+      # Aquí configuramos Maven para que use las credenciales de GitHub
+      - name: Set up Maven settings
+        run: |
+          mkdir -p ~/.m2
+          echo "<settings><servers><server><id>github</id><username>${{ secrets.USERNAME }}</username><password>${{ secrets.TOKEN }}</password></server></servers></settings>" > ~/.m2/settings.xml
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Compile project
         run: mvn clean package
 
