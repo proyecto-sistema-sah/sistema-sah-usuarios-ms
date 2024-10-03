@@ -28,11 +28,6 @@ public class UsuarioController {
         return ResponseEntity.status(respuestaGeneralDto.getStatus()).body(respuestaGeneralDto);
     }
 
-    @GetMapping("/hola")
-    public ResponseEntity<String> hola(){
-        return ResponseEntity.ok("Hola Mundo");
-    }
-
     @PostMapping("/login")
     public ResponseEntity<RespuestaGeneralDto> login(@RequestBody LoginDto loginDto){
         log.error(loginDto);
