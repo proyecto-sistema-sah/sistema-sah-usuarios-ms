@@ -64,12 +64,12 @@
 		<dependency>
 			<groupId>com.sistema.sah</groupId>
 			<artifactId>commons</artifactId>
-			<version>0.0.16</version>
+			<version>0.0.19</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sistema.sah</groupId>
 			<artifactId>seguridad</artifactId>
-			<version>0.0.8</version>
+			<version>0.0.18</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>

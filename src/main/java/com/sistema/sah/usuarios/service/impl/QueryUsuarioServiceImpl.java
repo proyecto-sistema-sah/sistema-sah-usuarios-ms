@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,9 +46,9 @@ public class QueryUsuarioServiceImpl implements IQueryUsuarioService {
         respuestaGeneralDto.setStatus(HttpStatus.OK);
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getContrasena()));
         UsuarioEntity usuarioEntity = usuarioRepository.findByCorreoUsuario(loginDto.getEmail()).orElseThrow();
-        UserDetails user = new UserSecurityDto(usuarioMapper.entityToDto(usuarioEntity));
-        String token = jwtService.getToken(user);
-        respuestaGeneralDto.setData(AuthResponseDto.builder().token(token).build());
+        UserSecurityDto user = new UserSecurityDto(usuarioMapper.entityToDto(usuarioEntity));
+        AuthResponseDto token = jwtService.generarToken(user);
+        respuestaGeneralDto.setData(token);
         return respuestaGeneralDto;
     }
 
