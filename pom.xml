@@ -24,19 +24,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>usuarios</name>
 	<description>Ms de usuarios que se encarga de la administracion de estos</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<org.mapstruct.version>1.6.2</org.mapstruct.version>
 		<java.version>17</java.version>
@@ -64,12 +51,12 @@
 		<dependency>
 			<groupId>com.sistema.sah</groupId>
 			<artifactId>commons</artifactId>
-			<version>0.0.24</version>
+			<version>0.0.25</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sistema.sah</groupId>
 			<artifactId>seguridad</artifactId>
-			<version>0.0.20</version>
+			<version>0.0.21</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
