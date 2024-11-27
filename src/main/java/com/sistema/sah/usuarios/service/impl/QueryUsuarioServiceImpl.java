@@ -10,14 +10,17 @@ import com.sistema.sah.seguridad.repository.UsuarioRepository;
 import com.sistema.sah.seguridad.service.impl.JwtService;
 import com.sistema.sah.usuarios.service.IQueryUsuarioService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QueryUsuarioServiceImpl implements IQueryUsuarioService {
 
 
@@ -42,13 +45,24 @@ public class QueryUsuarioServiceImpl implements IQueryUsuarioService {
     @Override
     public RespuestaGeneralDto loginUser(LoginDto loginDto) {
         RespuestaGeneralDto respuestaGeneralDto = new RespuestaGeneralDto();
-        respuestaGeneralDto.setMessage("Se logio correctamente");
-        respuestaGeneralDto.setStatus(HttpStatus.OK);
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getContrasena()));
-        UsuarioEntity usuarioEntity = usuarioRepository.findByCorreoUsuario(loginDto.getEmail()).orElseThrow();
-        UserSecurityDto user = new UserSecurityDto(usuarioMapper.entityToDto(usuarioEntity));
-        AuthResponseDto token = jwtService.generarToken(user);
-        respuestaGeneralDto.setData(token);
+        try{
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getContrasena()));
+            if(authentication.isAuthenticated()){
+                respuestaGeneralDto.setMessage("Se inicio correctamente");
+                respuestaGeneralDto.setStatus(HttpStatus.OK);
+                UsuarioEntity usuarioEntity = usuarioRepository.findByCorreoUsuario(loginDto.getEmail()).orElseThrow();
+                UserSecurityDto user = new UserSecurityDto(usuarioMapper.entityToDto(usuarioEntity));
+                AuthResponseDto token = jwtService.generarToken(user);
+                respuestaGeneralDto.setData(token);
+            }else{
+                respuestaGeneralDto.setMessage("Hubo un problema en las credenciales");
+                respuestaGeneralDto.setStatus(HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception e){
+            log.error("Error ", e);
+            respuestaGeneralDto.setMessage("Hubo un problema en las credenciales");
+            respuestaGeneralDto.setStatus(HttpStatus.UNAUTHORIZED);
+        }
         return respuestaGeneralDto;
     }
 
