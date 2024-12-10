@@ -6,8 +6,10 @@ import com.sistema.sah.commons.helper.util.Utilidades;
 import com.sistema.sah.seguridad.dto.UserSecurityDto;
 import com.sistema.sah.seguridad.repository.UsuarioRepository;
 import com.sistema.sah.seguridad.service.impl.JwtService;
+import com.sistema.sah.usuarios.repository.IUsuarioRepository;
 import com.sistema.sah.usuarios.service.ICreateUsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ public class CreateUsuarioServiceImpl implements ICreateUsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+    private final IUsuarioRepository iUsuarioRepository;
 
     /**
      * Registra un nuevo usuario en el sistema.
@@ -100,6 +103,9 @@ public class CreateUsuarioServiceImpl implements ICreateUsuarioService {
         }
         if (usuarioDto.getContrasena() == null || usuarioDto.getContrasena().isBlank()) {
             throw new IllegalArgumentException("La contraseña es obligatoria");
+        }
+        if(iUsuarioRepository.existsByCorreoUsuario(usuarioDto.getCorreoUsuario())) {
+            throw new IllegalArgumentException("El correo ya existe");
         }
     }
 }
