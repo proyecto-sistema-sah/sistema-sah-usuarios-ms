@@ -4,8 +4,11 @@ import com.sistema.sah.commons.dto.RespuestaGeneralDto;
 import com.sistema.sah.commons.dto.TipoAlimentoDto;
 import com.sistema.sah.commons.dto.TipoUsuarioDto;
 import com.sistema.sah.commons.helper.mapper.TipoUsuarioMapper;
+import com.sistema.sah.usuarios.dto.VistaTiposUsuarioDto;
 import com.sistema.sah.usuarios.repository.ITipoUsuarioRepository;
+import com.sistema.sah.usuarios.repository.IVistaTiposUsuarioRepository;
 import com.sistema.sah.usuarios.service.IQueryTipoUsuarioService;
+import com.sistema.sah.usuarios.util.mapper.VistaTiposUsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,8 +28,8 @@ import java.util.List;
 @Slf4j
 public class QueryTipoUsuarioServiceImpl implements IQueryTipoUsuarioService {
 
-    private final ITipoUsuarioRepository tipoUsuarioRepository;
-    private final TipoUsuarioMapper tipoUsuarioMapper;
+    private final IVistaTiposUsuarioRepository iVistaTiposUsuarioRepository;
+    private final VistaTiposUsuarioMapper vistaTiposUsuarioMapper;
 
     /**
      * Obtiene todos los tipos de usuario registrados en el sistema.
@@ -45,7 +48,7 @@ public class QueryTipoUsuarioServiceImpl implements IQueryTipoUsuarioService {
             log.info("Iniciando la consulta de todos los tipos de usuario");
 
             // Obtener la lista de tipos de usuario desde la base de datos
-            List<TipoUsuarioDto> listaTiposUsuario = tipoUsuarioMapper.listEntityTolistDto(tipoUsuarioRepository.findAll());
+            List<VistaTiposUsuarioDto> listaTiposUsuario = vistaTiposUsuarioMapper.entityListToDtoList(iVistaTiposUsuarioRepository.findAll());
 
             // Configurar la respuesta
             respuesta.setStatus(HttpStatus.OK);
